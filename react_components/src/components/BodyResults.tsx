@@ -1,15 +1,19 @@
 import { Component } from 'react';
 import ReqvestApi from './RequestApi';
 import { ResponsePlanetsType } from '../types';
-
-const PlanetCard = ({ index, name }: { index: number; name: string }) => {
-  return <div className={index.toString()}>{name}</div>;
-};
+import PlanetCard from './PlanetCards';
 
 class BodyResults extends Component {
-  data: null | ResponsePlanetsType = null;
-  state: { data: null | ResponsePlanetsType } = {
+  state: {
+    data: null | ResponsePlanetsType;
+    searchQuery: string;
+    mounted: boolean;
+    page: number;
+  } = {
     data: null,
+    searchQuery: '',
+    mounted: false,
+    page: 1,
   };
 
   constructor(props: Record<string, never>) {
@@ -17,12 +21,49 @@ class BodyResults extends Component {
 
     this.state = {
       data: null,
+      searchQuery: localStorage.getItem('searchUrl') || '',
+      mounted: false,
+      page: 1,
     };
+
+    window.addEventListener('storageChanged', () => {
+      console.log('Изменение в localStorage:');
+      if (this.state.mounted) {
+        this.loadData(true);
+      }
+    });
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.setState({ mounted: true });
+    this.loadData(true);
+  }
+
+  componentDidUpdate(
+    _prevProps: Record<string, never>,
+    prevState: {
+      data: null | ResponsePlanetsType;
+      searchQuery: string;
+      mounted: boolean;
+      page: number;
+    }
+  ) {
+    if (this.state.page !== prevState.page) {
+      this.loadData();
+    }
+  }
+
+  async loadData(dropPages = false) {
+    if (dropPages) {
+      this.setState({ page: 1 });
+    }
     try {
-      const response = await ReqvestApi.getResponse();
+      const newSearchQuery = localStorage.getItem('searchUrl') || '';
+      this.setState({ searchQuery: newSearchQuery });
+
+      const { page } = this.state;
+      const response = await ReqvestApi.getResponse(newSearchQuery, page);
+
       this.setState({ data: response });
     } catch (error) {
       console.error('Ошибка при загрузке данных', error);
@@ -31,12 +72,35 @@ class BodyResults extends Component {
 
   render() {
     const { data } = this.state;
+    const next = data?.next;
+    const prev = data?.previous;
 
     return (
       <main className="results section">
-        {data?.results?.map((item, index) => (
-          <PlanetCard key={item.name} index={index} {...item} />
-        ))}
+        <div className="planets">
+          {data?.results?.map((item, index) => (
+            <PlanetCard key={item.name} index={index} {...item} />
+          ))}
+        </div>
+        <div className="buttons">
+          <button
+            className={`${prev ? '' : 'disabled'} button`}
+            onClick={() => {
+              if (prev) {
+                this.setState({ page: this.state.page - 1 });
+              }
+            }}
+          >{`<`}</button>
+          <p className="disabled button">{this.state.page}</p>
+          <button
+            className={`${next ? '' : 'disabled'} button`}
+            onClick={() => {
+              if (next) {
+                this.setState({ page: this.state.page + 1 });
+              }
+            }}
+          >{`>`}</button>
+        </div>
       </main>
     );
   }

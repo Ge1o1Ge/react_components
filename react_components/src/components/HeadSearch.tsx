@@ -1,17 +1,19 @@
+import { setItemWithEvent } from './LocalStorageListener';
+
 const HeadSearch = () => {
   let searchBox = localStorage.getItem('searchUrl') || '';
 
   return (
     <header className="header section">
+      <h1 className="header__title">React components - SW Planets</h1>
       <form className="header__form">
-        <h1 className="header__title">React components</h1>
         <input
           type="text"
           placeholder="Search"
           className="header__input"
           defaultValue={searchBox}
           onChange={(ev) => {
-            searchBox = ev.target.value || "";
+            searchBox = ev.target.value || '';
           }}
         />
         <button
@@ -20,7 +22,7 @@ const HeadSearch = () => {
           onClick={(ev) => {
             ev.preventDefault();
             console.log(`pressed search = ${searchBox}`);
-            localStorage.setItem('searchUrl', searchBox);
+            setItemWithEvent('searchUrl', searchBox);
           }}
         >
           Find
