@@ -25,3 +25,10 @@ export type ResponsePlanetsType = {
 export type Readonly<T> = {
   readonly [P in keyof T]: T[P];
 };
+
+export interface State {
+    data: null | ResponsePlanetsType;
+    searchQuery: string;
+    mounted: boolean;
+    page: number;
+  }

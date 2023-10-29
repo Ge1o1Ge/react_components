@@ -1,15 +1,10 @@
 import { Component } from 'react';
 import ReqvestApi from './RequestApi';
-import { ResponsePlanetsType } from '../types';
+import { ResponsePlanetsType, State } from '../types';
 import PlanetCard from './PlanetCards';
 
-class BodyResults extends Component {
-  state: {
-    data: null | ResponsePlanetsType;
-    searchQuery: string;
-    mounted: boolean;
-    page: number;
-  } = {
+class BodyResults extends Component<Record<string, never>, State> {
+  state: State = {
     data: null,
     searchQuery: '',
     mounted: false,
@@ -27,7 +22,6 @@ class BodyResults extends Component {
     };
 
     window.addEventListener('storageChanged', () => {
-      console.log('Изменение в localStorage:');
       if (this.state.mounted) {
         this.loadData(true);
       }
@@ -55,7 +49,7 @@ class BodyResults extends Component {
 
   async loadData(dropPages = false) {
     if (dropPages) {
-      this.setState({ page: 1 });
+      await this.setState({ page: 1 });
     }
     try {
       const newSearchQuery = localStorage.getItem('searchUrl') || '';
@@ -64,11 +58,15 @@ class BodyResults extends Component {
       const { page } = this.state;
       const response = await ReqvestApi.getResponse(newSearchQuery, page);
 
-      this.setState({ data: response });
+      this.setState({ data: response ? response : null });
     } catch (error) {
       console.error('Ошибка при загрузке данных', error);
     }
   }
+
+  handlePageChange = (inc: number) => {
+    this.setState((prevState) => ({ page: prevState.page + inc }));
+  };
 
   render() {
     const { data } = this.state;
@@ -87,7 +85,8 @@ class BodyResults extends Component {
             className={`${prev ? '' : 'disabled'} button`}
             onClick={() => {
               if (prev) {
-                this.setState({ page: this.state.page - 1 });
+                // this.setState((prevState) => ({ count: prevState.count + 1 }));
+                this.handlePageChange(-1);
               }
             }}
           >{`<`}</button>
@@ -96,7 +95,7 @@ class BodyResults extends Component {
             className={`${next ? '' : 'disabled'} button`}
             onClick={() => {
               if (next) {
-                this.setState({ page: this.state.page + 1 });
+                this.handlePageChange(1);
               }
             }}
           >{`>`}</button>
