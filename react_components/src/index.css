@@ -94,3 +94,19 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0px 0 4px 4px rgba(230, 128, 132, 1);
 }
+
+.loading-animation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-animation__img {
+  height: 20vh;
+}
+
+.loading-animation__text {
+  font-size: 4vh;
+  font: bold;
+}

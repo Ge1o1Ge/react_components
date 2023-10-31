@@ -31,4 +31,5 @@ export interface State {
     searchQuery: string;
     mounted: boolean;
     page: number;
+    loading: boolean
   }

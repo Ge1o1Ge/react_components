@@ -9,6 +9,7 @@ class BodyResults extends Component<Record<string, never>, State> {
     searchQuery: '',
     mounted: false,
     page: 1,
+    loading: true,
   };
 
   constructor(props: Record<string, never>) {
@@ -19,6 +20,7 @@ class BodyResults extends Component<Record<string, never>, State> {
       searchQuery: localStorage.getItem('searchUrl') || '',
       mounted: false,
       page: 1,
+      loading: true,
     };
 
     window.addEventListener('storageChanged', () => {
@@ -52,6 +54,7 @@ class BodyResults extends Component<Record<string, never>, State> {
       await this.setState({ page: 1 });
     }
     try {
+      this.setState({ loading: true });
       const newSearchQuery = localStorage.getItem('searchUrl') || '';
       this.setState({ searchQuery: newSearchQuery });
 
@@ -61,6 +64,8 @@ class BodyResults extends Component<Record<string, never>, State> {
       this.setState({ data: response ? response : null });
     } catch (error) {
       console.error('Ошибка при загрузке данных', error);
+    } finally {
+      this.setState({ loading: false });
     }
   }
 
@@ -69,23 +74,30 @@ class BodyResults extends Component<Record<string, never>, State> {
   };
 
   render() {
-    const { data } = this.state;
+    const { data, loading } = this.state;
     const next = data?.next;
     const prev = data?.previous;
 
     return (
       <main className="results section">
-        <div className="planets">
-          {data?.results?.map((item, index) => (
-            <PlanetCard key={item.name} index={index} {...item} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="loading-animation">
+            <img className="loading-animation__img" src=".\src\assets\h2ff.gif" alt="loading" />
+            <p className="loading-animation__text">loading...</p>
+          </div>
+        ) : (
+          <div className="planets">
+            {data?.results?.map((item, index) => (
+              <PlanetCard key={item.name} index={index} {...item} />
+            ))}
+          </div>
+        )}
+
         <div className="buttons">
           <button
             className={`${prev ? '' : 'disabled'} button`}
             onClick={() => {
               if (prev) {
-                // this.setState((prevState) => ({ count: prevState.count + 1 }));
                 this.handlePageChange(-1);
               }
             }}
