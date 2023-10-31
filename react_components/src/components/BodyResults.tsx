@@ -88,7 +88,7 @@ class BodyResults extends Component<Record<string, never>, State> {
           <div className="loading-animation">
             <img
               className="loading-animation__img"
-              src="./public/h2ff.gif"
+              src="h2ff.gif"
               alt="loading"
             />
             <p className="loading-animation__text">loading...</p>
@@ -103,7 +103,7 @@ class BodyResults extends Component<Record<string, never>, State> {
           <div className="error">
             <img
               className="loading-animation__img"
-              src="./public/404.gif"
+              src="404.gif"
               alt="loading"
             />
             <p className="loading-animation__text">
