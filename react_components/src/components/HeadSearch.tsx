@@ -27,6 +27,17 @@ const HeadSearch = () => {
         >
           Find
         </button>
+
+        <button
+          className="header__btn header__btn_error"
+          type="submit"
+          onClick={(ev) => {
+            ev.preventDefault();
+            setItemWithEvent('searchUrl', 'ErrorCatch');
+          }}
+        >
+          Get Error
+        </button>
       </form>
     </header>
   );

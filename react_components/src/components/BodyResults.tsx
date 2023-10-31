@@ -10,6 +10,7 @@ class BodyResults extends Component<Record<string, never>, State> {
     mounted: false,
     page: 1,
     loading: true,
+    sucsess: true,
   };
 
   constructor(props: Record<string, never>) {
@@ -21,6 +22,7 @@ class BodyResults extends Component<Record<string, never>, State> {
       mounted: false,
       page: 1,
       loading: true,
+      sucsess: true,
     };
 
     window.addEventListener('storageChanged', () => {
@@ -50,6 +52,7 @@ class BodyResults extends Component<Record<string, never>, State> {
   }
 
   async loadData(dropPages = false) {
+    this.setState({ sucsess: true });
     if (dropPages) {
       await this.setState({ page: 1 });
     }
@@ -63,6 +66,7 @@ class BodyResults extends Component<Record<string, never>, State> {
 
       this.setState({ data: response ? response : null });
     } catch (error) {
+      this.setState({ sucsess: false });
       console.error('Ошибка при загрузке данных', error);
     } finally {
       this.setState({ loading: false });
@@ -74,7 +78,7 @@ class BodyResults extends Component<Record<string, never>, State> {
   };
 
   render() {
-    const { data, loading } = this.state;
+    const { data, loading, sucsess } = this.state;
     const next = data?.next;
     const prev = data?.previous;
 
@@ -82,14 +86,29 @@ class BodyResults extends Component<Record<string, never>, State> {
       <main className="results section">
         {loading ? (
           <div className="loading-animation">
-            <img className="loading-animation__img" src=".\public\h2ff.gif" alt="loading" />
+            <img
+              className="loading-animation__img"
+              src="./public/h2ff.gif"
+              alt="loading"
+            />
             <p className="loading-animation__text">loading...</p>
           </div>
-        ) : (
+        ) : sucsess ? (
           <div className="planets">
             {data?.results?.map((item, index) => (
               <PlanetCard key={item.name} index={index} {...item} />
             ))}
+          </div>
+        ) : (
+          <div className="error">
+            <img
+              className="loading-animation__img"
+              src="./public/404.gif"
+              alt="loading"
+            />
+            <p className="loading-animation__text">
+              {`Error :(`} <span>Something went wrong</span>
+            </p>
           </div>
         )}
 

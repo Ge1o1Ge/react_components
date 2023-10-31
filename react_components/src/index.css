@@ -46,8 +46,19 @@ body {
   border: 2px solid rgb(0, 0, 0);
 }
 
+
+
 .header__btn:hover {
   background-color: rgb(83, 78, 78);
+}
+
+.header__btn_error {
+  margin-left: 20px;
+  border-radius: 10px;
+  background-color: red;
+  border: 2px solid rgb(242, 126, 126);
+  color: black;
+  font: 700;
 }
 
 .planets {
@@ -95,7 +106,7 @@ body {
   box-shadow: 0px 0 4px 4px rgba(230, 128, 132, 1);
 }
 
-.loading-animation {
+.loading-animation, .error {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,4 +120,11 @@ body {
 .loading-animation__text {
   font-size: 4vh;
   font: bold;
+}
+
+.error {
+  background-color: rgba(239, 8, 8, 0.1);
+  border-radius: 20px;
+  display: flex;
+  padding: 20px 0;
 }

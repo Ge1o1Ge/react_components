@@ -27,9 +27,10 @@ export type Readonly<T> = {
 };
 
 export interface State {
-    data: null | ResponsePlanetsType;
-    searchQuery: string;
-    mounted: boolean;
-    page: number;
-    loading: boolean
-  }
+  data: null | ResponsePlanetsType;
+  searchQuery: string;
+  mounted: boolean;
+  page: number;
+  loading: boolean;
+  sucsess: boolean;
+}
