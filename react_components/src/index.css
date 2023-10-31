@@ -1,0 +1,130 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(20, 33, 67);
+  color: aliceblue;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 1px 2px 2px rgb(39, 86, 238);
+}
+
+.section {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.header__form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header__title {
+  text-align: center;
+}
+
+.header__input {
+  border-radius: 10px 0 0 10px;
+  padding-left: 15px;
+  width: 50%;
+  color: bisque;
+  font: 700;
+  background-color: rgb(35, 8, 239);
+  border: 1px solid rgb(255, 255, 255);
+  box-shadow: -15px 0 15px 10px rgb(128, 152, 230);
+}
+
+.header__btn {
+  color: bisque;
+  font: bold;
+  width: 15%;
+  border-radius: -50px;
+  border-radius: 0 7px 7px 0;
+  background-color: rgb(50, 49, 49);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+
+
+.header__btn:hover {
+  background-color: rgb(83, 78, 78);
+}
+
+.header__btn_error {
+  margin-left: 20px;
+  border-radius: 10px;
+  background-color: red;
+  border: 2px solid rgb(242, 126, 126);
+  color: black;
+  font: 700;
+}
+
+.planets {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.planet__card {
+  border-radius: 20px;
+  margin: 10px;
+  padding: 10px;
+  flex: 0 0 calc(33.33% - 20px);
+  min-width: 220px;
+  width: 100%;
+  background-color: rgb(14, 14, 41);
+}
+
+.buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  height: 25px;
+  line-height: 25px;
+}
+
+.button {
+  height: 100%;
+  display: block;
+  margin: 0 5px;
+  width: 45px;
+  text-align: center;
+  color: bisque;
+  background-color: rgb(35, 8, 239);
+  border: 1px solid rgb(255, 255, 255);
+  box-shadow: 0px 0 4px 4px rgb(128, 152, 230);
+  border-radius: 8px;
+}
+
+.disabled {
+  background-color: rgba(239, 8, 8, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0px 0 4px 4px rgba(230, 128, 132, 1);
+}
+
+.loading-animation, .error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-animation__img {
+  height: 20vh;
+}
+
+.loading-animation__text {
+  font-size: 4vh;
+  font: bold;
+}
+
+.error {
+  background-color: rgba(239, 8, 8, 0.1);
+  border-radius: 20px;
+  display: flex;
+  padding: 20px 0;
+}
