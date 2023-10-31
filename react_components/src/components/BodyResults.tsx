@@ -82,7 +82,7 @@ class BodyResults extends Component<Record<string, never>, State> {
       <main className="results section">
         {loading ? (
           <div className="loading-animation">
-            <img className="loading-animation__img" src=".\src\assets\h2ff.gif" alt="loading" />
+            <img className="loading-animation__img" src=".\public\h2ff.gif" alt="loading" />
             <p className="loading-animation__text">loading...</p>
           </div>
         ) : (
