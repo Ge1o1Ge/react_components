@@ -1,5 +1,0 @@
-{
-  "hooks": {
-    "pre-commit": "GIT_DIR=./../.git/ npm run lint && GIT_DIR=./../.git/ npm run format:fix"
-  }
-}
