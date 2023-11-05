@@ -1,17 +1,22 @@
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from 'react-router-dom';
+
 import './App.css';
-import BodyResults from './components/BodyResults';
-import ErrorBoundry from './components/ErrorBoundry';
-import HeadSearch from './components/HeadSearch';
+
+import MainPage from './components/mainPage';
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<MainPage />}/>
+  )
+);
 
 const App = () => {
-  return (
-    <>
-      <HeadSearch />
-      <ErrorBoundry>
-        <BodyResults />
-      </ErrorBoundry>
-    </>
-  );
-}
+  return <RouterProvider router={router}/>;
+};
 
 export default App;

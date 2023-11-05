@@ -1,3 +1,4 @@
+import { Form } from 'react-router-dom';
 import { setItemWithEvent } from './LocalStorageListener';
 
 const HeadSearch = () => {
@@ -6,7 +7,7 @@ const HeadSearch = () => {
   return (
     <header className="header section">
       <h1 className="header__title">React components - SW Planets</h1>
-      <form className="header__form">
+      <Form className="header__form">
         <input
           type="text"
           placeholder="Search"
@@ -28,7 +29,7 @@ const HeadSearch = () => {
           Find
         </button>
 
-        <button
+      <button 
           className="header__btn header__btn_error"
           type="submit"
           onClick={(ev) => {
@@ -38,7 +39,7 @@ const HeadSearch = () => {
         >
           Get Error
         </button>
-      </form>
+      </Form>
     </header>
   );
 };
