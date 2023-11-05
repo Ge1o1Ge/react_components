@@ -46,8 +46,6 @@ body {
   border: 2px solid rgb(0, 0, 0);
 }
 
-
-
 .header__btn:hover {
   background-color: rgb(83, 78, 78);
 }
@@ -106,7 +104,8 @@ body {
   box-shadow: 0px 0 4px 4px rgba(230, 128, 132, 1);
 }
 
-.loading-animation, .error {
+.loading-animation,
+.error {
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -24,7 +24,7 @@ class BodyResults extends Component<React.PropsWithChildren<object>, State> {
       page: 1,
       loading: true,
       sucsess: true,
-      pageError: undefined
+      pageError: undefined,
     };
 
     window.addEventListener('storageChanged', () => {

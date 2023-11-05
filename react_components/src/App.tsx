@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <HeadSearch />
-      <ErrorBoundry >
+      <ErrorBoundry>
         <BodyResults />
       </ErrorBoundry>
     </>

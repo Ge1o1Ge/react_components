@@ -15,12 +15,12 @@ export default class ReqvestApi {
 
     if (ReqvestApi.url.indexOf('ErrorCatch') !== -1) {
       return fetch('https://swapi.dev/api/plaff')
-      .then((response) => response.json())
-      .then(() => {})
-      .catch((error) => {
-        console.error(error);
-        throw error
-      });
+        .then((response) => response.json())
+        .then(() => {})
+        .catch((error) => {
+          console.error(error);
+          throw error;
+        });
     }
     // localStorage.setItem('searchUrl', searchKey);
     return fetch(ReqvestApi.url)
@@ -31,7 +31,7 @@ export default class ReqvestApi {
       })
       .catch((error) => {
         console.error(error);
-        throw error
+        throw error;
       });
   }
 }
