@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReqvestApi from './RequestApi';
 import { ResponsePlanetsType } from '../types';
 import PlanetCard from './PlanetCards';
@@ -14,12 +14,17 @@ const BodyResults = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [success, setSuccess] = useState<boolean>(true);
   const [pageError, setPageError] = useState<Error | undefined>(undefined);
+  const fetching = useRef<boolean>(false);
 
   useEffect(() => {
+    if (fetching.current) {
+      return;
+    }
+    fetching.current = true;
     setSuccess(true);
     setLoading(true);
     setMounted(true);
-    console.log(1)
+    console.log(1);
     async function loadData() {
       try {
         const response = await ReqvestApi.getResponse(searchQuery, page);
@@ -29,11 +34,11 @@ const BodyResults = () => {
         setPageError(error as Error);
       } finally {
         setLoading(false);
+        fetching.current = false;
       }
     }
 
-    loadData()
-
+    loadData();
   }, [mounted, page, searchQuery]);
 
   useEffect(() => {
@@ -67,7 +72,7 @@ const BodyResults = () => {
   return (
     <main className="results section">
       {loading ? (
-        <Loader/>
+        <Loader />
       ) : (
         <div className="planets">
           {data?.results?.map((item, index) => (

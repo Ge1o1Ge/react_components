@@ -3,7 +3,7 @@ import BodyResults from './components/BodyResults';
 import ErrorBoundry from './components/ErrorBoundry';
 import HeadSearch from './components/HeadSearch';
 
-function App() {
+const App = () => {
   return (
     <>
       <HeadSearch />
