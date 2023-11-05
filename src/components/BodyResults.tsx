@@ -1,132 +1,102 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import ReqvestApi from './RequestApi';
-import { ResponsePlanetsType, State } from '../types';
+import { ResponsePlanetsType } from '../types';
 import PlanetCard from './PlanetCards';
+import Loader from './Loader';
 
-class BodyResults extends Component<React.PropsWithChildren<object>, State> {
-  state: State = {
-    data: null,
-    searchQuery: '',
-    mounted: false,
-    page: 1,
-    loading: true,
-    sucsess: true,
-    pageError: undefined,
-  };
+const BodyResults = () => {
+  const [data, setData] = useState<ResponsePlanetsType | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>(
+    localStorage.getItem('searchUrl') || ''
+  );
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [success, setSuccess] = useState<boolean>(true);
+  const [pageError, setPageError] = useState<Error | undefined>(undefined);
 
-  constructor(props: React.PropsWithChildren<object>) {
-    super(props);
+  useEffect(() => {
+    setSuccess(true);
+    setLoading(true);
+    setMounted(true);
+    console.log(1)
+    async function loadData() {
+      try {
+        const response = await ReqvestApi.getResponse(searchQuery, page);
+        setData(response || null);
+      } catch (error) {
+        setSuccess(false);
+        setPageError(error as Error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    this.state = {
-      data: null,
-      searchQuery: localStorage.getItem('searchUrl') || '',
-      mounted: false,
-      page: 1,
-      loading: true,
-      sucsess: true,
-      pageError: undefined,
+    loadData()
+
+  }, [mounted, page, searchQuery]);
+
+  useEffect(() => {
+    // setMounted(true);
+
+    const storageChangedHandler = () => {
+      setSearchQuery(localStorage.getItem('searchUrl') || '');
+      setPageError(undefined);
+      setData(null);
+      setPage(1);
     };
 
-    window.addEventListener('storageChanged', () => {
-      if (this.state.mounted) {
-        this.loadData(true);
-      }
-    });
-  }
+    window.addEventListener('storageChanged', storageChangedHandler);
 
-  componentDidMount() {
-    this.setState({ mounted: true });
-    this.loadData(true);
-  }
+    return () => {
+      window.removeEventListener('storageChanged', storageChangedHandler);
+    };
+  });
 
-  componentDidUpdate(
-    _prevProps: Record<string, never>,
-    prevState: {
-      data: null | ResponsePlanetsType;
-      searchQuery: string;
-      mounted: boolean;
-      page: number;
-    }
-  ) {
-    if (this.state.page !== prevState.page) {
-      this.loadData();
-    }
-  }
-
-  async loadData(dropPages = false) {
-    this.setState({ sucsess: true, pageError: undefined });
-    if (dropPages) {
-      await this.setState({ page: 1 });
-    }
-    try {
-      this.setState({ loading: true });
-      const newSearchQuery = localStorage.getItem('searchUrl') || '';
-      this.setState({ searchQuery: newSearchQuery });
-
-      const { page } = this.state;
-      const response = await ReqvestApi.getResponse(newSearchQuery, page);
-
-      this.setState({ data: response ? response : null });
-    } catch (error) {
-      this.setState({ sucsess: false, pageError: error as Error });
-    } finally {
-      this.setState({ loading: false });
-    }
-  }
-
-  handlePageChange = (inc: number) => {
-    this.setState((prevState) => ({ page: prevState.page + inc }));
+  const handlePageChange = (inc: number) => {
+    setPage((prevPage: number) => prevPage + inc);
   };
 
-  render() {
-    const { data, loading, sucsess } = this.state;
-    const next = data?.next;
-    const prev = data?.previous;
-    if (!sucsess) {
-      throw this.state.pageError;
-    }
+  const next = data?.next;
+  const prev = data?.previous;
 
-    return (
-      <main className="results section">
-        {loading ? (
-          <div className="loading-animation">
-            <img
-              className="loading-animation__img"
-              src="h2ff.gif"
-              alt="loading"
-            />
-            <p className="loading-animation__text">loading...</p>
-          </div>
-        ) : (
-          <div className="planets">
-            {data?.results?.map((item, index) => (
-              <PlanetCard key={item.name} index={index} {...item} />
-            ))}
-          </div>
-        )}
-
-        <div className="buttons">
-          <button
-            className={`${prev ? '' : 'disabled'} button`}
-            onClick={() => {
-              if (prev) {
-                this.handlePageChange(-1);
-              }
-            }}
-          >{`<`}</button>
-          <p className="disabled button">{this.state.page}</p>
-          <button
-            className={`${next ? '' : 'disabled'} button`}
-            onClick={() => {
-              if (next) {
-                this.handlePageChange(1);
-              }
-            }}
-          >{`>`}</button>
-        </div>
-      </main>
-    );
+  if (!success) {
+    throw pageError;
   }
-}
+
+  return (
+    <main className="results section">
+      {loading ? (
+        <Loader/>
+      ) : (
+        <div className="planets">
+          {data?.results?.map((item, index) => (
+            <PlanetCard key={item.name} index={index} {...item} />
+          ))}
+        </div>
+      )}
+
+      <div className="buttons">
+        <button
+          className={`${prev ? '' : 'disabled'} button`}
+          onClick={() => {
+            if (prev) {
+              handlePageChange(-1);
+            }
+          }}
+        >{`<`}</button>
+        <p className="disabled button">{page}</p>
+        <button
+          className={`${next ? '' : 'disabled'} button`}
+          onClick={() => {
+            if (next) {
+              handlePageChange(1);
+            }
+          }}
+        >{`>`}</button>
+      </div>
+    </main>
+  );
+};
 
 export default BodyResults;
