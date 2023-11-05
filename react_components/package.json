@@ -35,7 +35,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "GIT_DIR=./.git/ npm run lint && GIT_DIR=./.git/ npm run format:fix"
+      "pre-commit": "GIT_DIR=C:/Users/hwast/OneDrive/Рабочий стол/Coding/ReactCourse/components/react_components/react_components npm run lint && GIT_DIR=./../.git/ npm run format:fix"
     }
   }
 }
