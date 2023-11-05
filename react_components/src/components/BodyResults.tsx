@@ -3,7 +3,7 @@ import ReqvestApi from './RequestApi';
 import { ResponsePlanetsType, State } from '../types';
 import PlanetCard from './PlanetCards';
 
-class BodyResults extends Component<Record<string, never>, State> {
+class BodyResults extends Component<React.PropsWithChildren<object>, State> {
   state: State = {
     data: null,
     searchQuery: '',
@@ -11,9 +11,10 @@ class BodyResults extends Component<Record<string, never>, State> {
     page: 1,
     loading: true,
     sucsess: true,
+    pageError: undefined,
   };
 
-  constructor(props: Record<string, never>) {
+  constructor(props: React.PropsWithChildren<object>) {
     super(props);
 
     this.state = {
@@ -23,6 +24,7 @@ class BodyResults extends Component<Record<string, never>, State> {
       page: 1,
       loading: true,
       sucsess: true,
+      pageError: undefined
     };
 
     window.addEventListener('storageChanged', () => {
@@ -52,7 +54,7 @@ class BodyResults extends Component<Record<string, never>, State> {
   }
 
   async loadData(dropPages = false) {
-    this.setState({ sucsess: true });
+    this.setState({ sucsess: true, pageError: undefined });
     if (dropPages) {
       await this.setState({ page: 1 });
     }
@@ -66,8 +68,7 @@ class BodyResults extends Component<Record<string, never>, State> {
 
       this.setState({ data: response ? response : null });
     } catch (error) {
-      this.setState({ sucsess: false });
-      console.error('Ошибка при загрузке данных', error);
+      this.setState({ sucsess: false, pageError: error as Error });
     } finally {
       this.setState({ loading: false });
     }
@@ -81,6 +82,9 @@ class BodyResults extends Component<Record<string, never>, State> {
     const { data, loading, sucsess } = this.state;
     const next = data?.next;
     const prev = data?.previous;
+    if (!sucsess) {
+      throw this.state.pageError;
+    }
 
     return (
       <main className="results section">
@@ -93,22 +97,11 @@ class BodyResults extends Component<Record<string, never>, State> {
             />
             <p className="loading-animation__text">loading...</p>
           </div>
-        ) : sucsess ? (
+        ) : (
           <div className="planets">
             {data?.results?.map((item, index) => (
               <PlanetCard key={item.name} index={index} {...item} />
             ))}
-          </div>
-        ) : (
-          <div className="error">
-            <img
-              className="loading-animation__img"
-              src="404.gif"
-              alt="loading"
-            />
-            <p className="loading-animation__text">
-              {`Error :(`} <span>Something went wrong</span>
-            </p>
           </div>
         )}
 

@@ -1,14 +1,17 @@
-import './App.css'
-import BodyResults from './components/BodyResults'
-import HeadSearch from './components/HeadSearch'
+import './App.css';
+import BodyResults from './components/BodyResults';
+import ErrorBoundry from './components/ErrorBoundry';
+import HeadSearch from './components/HeadSearch';
 
 function App() {
   return (
     <>
-      <HeadSearch/>
-      <BodyResults/>
+      <HeadSearch />
+      <ErrorBoundry >
+        <BodyResults />
+      </ErrorBoundry>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

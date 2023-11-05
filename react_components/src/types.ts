@@ -33,4 +33,10 @@ export interface State {
   page: number;
   loading: boolean;
   sucsess: boolean;
+  pageError: undefined | Error;
 }
+
+export type CatchError = {
+  catchError: boolean;
+  mounted: boolean;
+};
