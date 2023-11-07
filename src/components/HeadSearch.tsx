@@ -1,20 +1,38 @@
-import { Form } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setItemWithEvent } from './LocalStorageListener';
+import { useEffect, useState } from 'react';
 
 const HeadSearch = () => {
-  let searchBox = localStorage.getItem('searchUrl') || '';
+  const history = useNavigate();
+  const [searchBox, setSearchBox] = useState(localStorage.getItem('searchUrl') || '');
+  const queryParams = new URLSearchParams(location.search);
+  const query = queryParams.get('query');
+
+  const performSearch = (searchQuery: string) => {
+    console.log(`pressed search = ${searchQuery}`);
+    setItemWithEvent('searchUrl', searchQuery);
+  };
+
+  const handleSearch = () => {
+    history(`/search?query=${searchBox}`);
+  };
+
+  useEffect(() => {
+    setSearchBox(query || '')
+    performSearch(query || '');
+  }, [query]);
 
   return (
     <header className="header section">
       <h1 className="header__title">React components - SW Planets</h1>
-      <Form className="header__form">
+      <form className="header__form">
         <input
           type="text"
           placeholder="Search"
           className="header__input"
           defaultValue={searchBox}
           onChange={(ev) => {
-            searchBox = ev.target.value || '';
+            setSearchBox(ev.target.value || '');
           }}
         />
         <button
@@ -22,14 +40,14 @@ const HeadSearch = () => {
           type="submit"
           onClick={(ev) => {
             ev.preventDefault();
-            console.log(`pressed search = ${searchBox}`);
-            setItemWithEvent('searchUrl', searchBox);
+            handleSearch()
+            performSearch(searchBox)
           }}
         >
           Find
         </button>
 
-      <button 
+        <button
           className="header__btn header__btn_error"
           type="submit"
           onClick={(ev) => {
@@ -39,7 +57,7 @@ const HeadSearch = () => {
         >
           Get Error
         </button>
-      </Form>
+      </form>
     </header>
   );
 };
