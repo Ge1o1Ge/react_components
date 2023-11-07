@@ -15,7 +15,8 @@ const HeadSearch = () => {
   };
 
   const handleSearch = () => {
-    history(`/search?search=${searchBox}&page=1`);
+
+    history(`${window.location.pathname.split('/search')[0]}/search?search=${searchBox}&page=1`);
   };
 
   useEffect(() => {
