@@ -7,9 +7,9 @@ export default class ReqvestApi {
     ReqvestApi.SearchKey ? `?search=${ReqvestApi.SearchKey}` : ''
   }`;
 
-  static async getResponse(searchQuery = '', page = 1) {
+  static async getResponse(searchQuery = '', page = 1, limit = 10) {
     ReqvestApi.SearchKey = localStorage.getItem('searchUrl') || '';
-    ReqvestApi.url = `https://swapi.dev/api/planets?page=${page}${
+    ReqvestApi.url = `https://swapi.dev/api/planets?limit=${limit}&page=${page}${
       searchQuery ? `&search=${searchQuery}` : ''
     }`;
 
