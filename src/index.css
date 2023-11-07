@@ -142,7 +142,7 @@ body {
 }
 
 .detailed {
-  max-width: 40vw;
+  max-width: min(500px, 40vw);
 }
 
 .planet__details {
