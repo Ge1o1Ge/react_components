@@ -26,9 +26,8 @@ class ErrorBoundry extends React.Component<
   }
 
   componentDidCatch(error: Error) {
-    // Метод вызывается при возникновении ошибки
     console.error('Ошибка при загрузке данных NEN:', error);
-    this.setState({ catchError: true }); // Сбрасываем состояние ошибки
+    this.setState({ catchError: true });
   }
 
   resetError = () => {
@@ -39,6 +38,7 @@ class ErrorBoundry extends React.Component<
     const { catchError } = this.state;
     const { children } = this.props;
     if (catchError) {
+
       return (
         <div className="error">
           <img className="loading-animation__img" src="404.gif" alt="error" />

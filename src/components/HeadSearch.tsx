@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react';
 
 const HeadSearch = () => {
   const history = useNavigate();
-  const [searchBox, setSearchBox] = useState(localStorage.getItem('searchUrl') || '');
+  const [searchBox, setSearchBox] = useState(
+    localStorage.getItem('searchUrl') || ''
+  );
   const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get('query');
+  const query = queryParams.get('search');
 
   const performSearch = (searchQuery: string) => {
     console.log(`pressed search = ${searchQuery}`);
@@ -14,12 +16,11 @@ const HeadSearch = () => {
   };
 
   const handleSearch = () => {
-    history(`/search?query=${searchBox}`);
+    history(`/search?search=${searchBox}&page=1`);
   };
 
   useEffect(() => {
-    setSearchBox(query || '')
-    performSearch(query || '');
+    setSearchBox(query || '');
   }, [query]);
 
   return (
@@ -30,7 +31,7 @@ const HeadSearch = () => {
           type="text"
           placeholder="Search"
           className="header__input"
-          defaultValue={searchBox}
+          value={searchBox}
           onChange={(ev) => {
             setSearchBox(ev.target.value || '');
           }}
@@ -40,8 +41,8 @@ const HeadSearch = () => {
           type="submit"
           onClick={(ev) => {
             ev.preventDefault();
-            handleSearch()
-            performSearch(searchBox)
+            handleSearch();
+            performSearch(searchBox);
           }}
         >
           Find

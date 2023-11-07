@@ -3,6 +3,7 @@ import ReqvestApi from './RequestApi';
 import { ResponsePlanetsType } from '../types';
 import PlanetCard from './PlanetCards';
 import Loader from './Loader';
+import { useNavigate } from 'react-router-dom';
 
 const BodyResults = () => {
   const [data, setData] = useState<ResponsePlanetsType | null>(null);
@@ -13,8 +14,14 @@ const BodyResults = () => {
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [success, setSuccess] = useState<boolean>(true);
+  // const [ofset, setOfset] = useState<number>(10);
   const [pageError, setPageError] = useState<Error | undefined>(undefined);
   const fetching = useRef<boolean>(false);
+  const navigate = useNavigate();
+
+  const pageParams = new URLSearchParams(location.search);
+  const pageURL = pageParams.get('page');
+  const query = pageParams.get('search');
 
   useEffect(() => {
     if (fetching.current) {
@@ -45,10 +52,14 @@ const BodyResults = () => {
     // setMounted(true);
 
     const storageChangedHandler = () => {
-      setSearchQuery(localStorage.getItem('searchUrl') || '');
-      setPageError(undefined);
-      setData(null);
-      setPage(1);
+      const newQuery = localStorage.getItem('searchUrl') || '';
+
+      if (newQuery !== searchQuery) {
+        setSearchQuery(localStorage.getItem('searchUrl') || '');
+        setPageError(undefined);
+        setData(null);
+        setPage(1);
+      }
     };
 
     window.addEventListener('storageChanged', storageChangedHandler);
@@ -59,8 +70,24 @@ const BodyResults = () => {
   });
 
   const handlePageChange = (inc: number) => {
-    setPage((prevPage: number) => prevPage + inc);
+    const newPage = page + inc;
+
+    const currentUrl = (
+      window.location.pathname + window.location.search
+    ).split('&page')[0];
+    const newUrl = `${currentUrl}&page=${newPage}`;
+
+    navigate(newUrl);
+
+    setPage(newPage);
   };
+
+  useEffect(() => {
+    setPage(Number(pageURL) || 1);
+    console.log('поиск', query);
+    setSearchQuery(query || '');
+    localStorage.setItem('searchUrl', query || '');
+  }, [pageURL, query]);
 
   const next = data?.next;
   const prev = data?.previous;
