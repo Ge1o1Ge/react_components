@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import ReqvestApi from './RequestApi';
-import { ResponsePlanetsType } from '../types';
+import { Planet, ResponsePlanetsType } from '../types';
 import PlanetCard from './PlanetCards';
 import Loader from './Loader';
 import { useNavigate } from 'react-router-dom';
+import PlanetDetails from './PlanetDetails';
 
 const BodyResults = () => {
   const [data, setData] = useState<ResponsePlanetsType | null>(null);
@@ -17,11 +18,15 @@ const BodyResults = () => {
   // const [ofset, setOfset] = useState<number>(10);
   const [pageError, setPageError] = useState<Error | undefined>(undefined);
   const fetching = useRef<boolean>(false);
+
+  const [clickedPlanet, setClicked] = useState<number>(-1);
+
   const navigate = useNavigate();
 
   const pageParams = new URLSearchParams(location.search);
   const pageURL = pageParams.get('page');
   const query = pageParams.get('search');
+  const planet = pageParams.get('planet');
 
   useEffect(() => {
     if (fetching.current) {
@@ -31,7 +36,6 @@ const BodyResults = () => {
     setSuccess(true);
     setLoading(true);
     setMounted(true);
-    console.log(1);
     async function loadData() {
       try {
         const response = await ReqvestApi.getResponse(searchQuery, page);
@@ -84,10 +88,14 @@ const BodyResults = () => {
 
   useEffect(() => {
     setPage(Number(pageURL) || 1);
-    console.log('поиск', query);
     setSearchQuery(query || '');
+    if (Number(planet) >= 0 && planet !== null) {
+      setClicked(Number(planet));
+    } else {
+      setClicked(-1);
+    }
     localStorage.setItem('searchUrl', query || '');
-  }, [pageURL, query]);
+  }, [pageURL, query, planet]);
 
   const next = data?.next;
   const prev = data?.previous;
@@ -96,17 +104,54 @@ const BodyResults = () => {
     throw pageError;
   }
 
+  const handleCardClick = (index: number) => {
+    setClicked(index);
+  };
+
   return (
     <main className="results section">
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="planets">
-          {data?.results?.map((item, index) => (
-            <PlanetCard key={item.name} index={index} {...item} />
-          ))}
-        </div>
-      )}
+      <section
+        className={clickedPlanet >= 0 ? 'detailed' : 'results__splitter'}
+      >
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="planets">
+            {data?.results?.map((item, index) => (
+              <PlanetCard
+                clickedPlanet={clickedPlanet}
+                onClick={handleCardClick}
+                key={item.name}
+                index={index}
+                {...item}
+              />
+            ))}
+          </div>
+        )}
+
+        {clickedPlanet >= 0 && (
+          <div
+            className="hover"
+            onClick={(event) => {
+              if (event.target === event.currentTarget) {
+                navigate(
+                  `${
+                    (window.location.pathname + window.location.search).split(
+                      '&planet='
+                    )[0]
+                  }`
+                );
+                setClicked(-1);
+              }
+            }}
+          >
+            <PlanetDetails
+              onClick={handleCardClick}
+              {...(data?.results[clickedPlanet] as Planet)}
+            />
+          </div>
+        )}
+      </section>
 
       <div className="buttons">
         <button

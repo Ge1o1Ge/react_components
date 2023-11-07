@@ -38,7 +38,6 @@ class ErrorBoundry extends React.Component<
     const { catchError } = this.state;
     const { children } = this.props;
     if (catchError) {
-
       return (
         <div className="error">
           <img className="loading-animation__img" src="404.gif" alt="error" />

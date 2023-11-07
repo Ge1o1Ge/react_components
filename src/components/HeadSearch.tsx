@@ -11,7 +11,6 @@ const HeadSearch = () => {
   const query = queryParams.get('search');
 
   const performSearch = (searchQuery: string) => {
-    console.log(`pressed search = ${searchQuery}`);
     setItemWithEvent('searchUrl', searchQuery);
   };
 

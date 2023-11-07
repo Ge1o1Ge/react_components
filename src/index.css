@@ -72,7 +72,7 @@ body {
   margin: 10px;
   padding: 10px;
   flex: 0 0 calc(33.33% - 20px);
-  min-width: 220px;
+  min-width: 100%;
   width: 100%;
   background-color: rgb(14, 14, 41);
 }
@@ -126,4 +126,65 @@ body {
   border-radius: 20px;
   display: flex;
   padding: 20px 0;
+}
+
+.planet__link {
+  display: block;
+  width: auto;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clicked {
+  background-color: brown;
+}
+
+.detailed {
+  max-width: 40vw;
+}
+
+.planet__details {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  width: 50vw;
+  position: fixed;
+  top: 30%;
+  right: 20px;
+  height: 50%;
+  background-color: rgb(14, 14, 41);
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.hover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.close__buton {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  height: 40px;
+  width: 40px;
+
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+}
+
+.close__buton:hover {
+  background-color: rgba(239, 8, 8, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0px 0 4px 4px rgba(230, 128, 132, 1);
+  transition: all 0.5s ease;
 }

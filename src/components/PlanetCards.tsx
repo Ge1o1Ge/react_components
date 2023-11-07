@@ -1,37 +1,30 @@
+import { Link } from 'react-router-dom';
+
 const PlanetCard = ({
+  onClick,
   index,
   name,
-  climate,
-  diameter,
-  gravity,
-  terrain,
-  rotation_period,
-  orbital_period,
+  clickedPlanet
 }: {
+  onClick: (index: number) => void;
   index: number;
   name: string;
-  climate: string;
-  diameter: string;
-  gravity: string;
-  terrain: string;
-  rotation_period: string;
-  orbital_period: string;
+  clickedPlanet: number
 }) => {
+
   return (
-    <div className={`${index.toString()} planet__card`}>
+    <div className={`${index.toString()} ${clickedPlanet == index ? 'clicked' : ''} planet__card`}>
       <h3 className="planet__title">{name}</h3>
-      <div className="planet__size">
-        <p className="planet__text">diameter: {diameter} km</p>
-        <p className="planet__text">gravity: {gravity}</p>
-      </div>
-      <div className="planet__climate">
-        <p className="planet__text">terrain: {terrain}</p>
-        <p className="planet__text">climate: {climate}</p>
-      </div>
-      <div className="planet__time">
-        <p className="planet__text">day: {rotation_period}h</p>
-        <p className="planet__text">year: {orbital_period} ED</p>
-      </div>
+
+      <Link
+        onClick={() => {
+          onClick(index);
+        }}
+        className="planet__link button"
+        to={`${(window.location.pathname + window.location.search).split('&planet=')[0]}&planet=${index}`}
+      >
+        See Details
+      </Link>
     </div>
   );
 };
