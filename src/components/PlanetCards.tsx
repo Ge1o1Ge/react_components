@@ -11,6 +11,7 @@ const PlanetCard = ({
   name: string;
   clickedPlanet: number;
 }) => {
+  
   return (
     <div
       className={`${index.toString()} ${
@@ -24,11 +25,7 @@ const PlanetCard = ({
           onClick(index);
         }}
         className="planet__link button"
-        to={`${
-          (window.location.pathname + window.location.search).split(
-            '&planet='
-          )[0]
-        }&planet=${index}`}
+        to={{ pathname: window.location.pathname, search: `planet=${index}` }}
       >
         See Details
       </Link>

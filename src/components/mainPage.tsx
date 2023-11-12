@@ -1,3 +1,5 @@
+
+import { AppProvider } from './AppContext';
 import BodyResults from './BodyResults';
 import ErrorBoundry from './ErrorBoundry';
 import HeadSearch from './HeadSearch';
@@ -5,10 +7,12 @@ import HeadSearch from './HeadSearch';
 const MainPage = () => {
   return (
     <main>
-      <HeadSearch />
-      <ErrorBoundry>
-        <BodyResults />
-      </ErrorBoundry>
+      <AppProvider>
+        <HeadSearch />
+        <ErrorBoundry>
+          <BodyResults />
+        </ErrorBoundry>
+      </AppProvider>
     </main>
   );
 };

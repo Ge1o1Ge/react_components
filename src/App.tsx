@@ -7,10 +7,18 @@ import {
 
 import './App.css';
 
+import ErrorPage from './components/ErrorPage';
 import MainPage from './components/mainPage';
 
 const router = createBrowserRouter(
-  createRoutesFromElements(<Route path="*" element={<MainPage />} />)
+  createRoutesFromElements(
+    <>
+      <Route>
+        <Route path="/*" element={<MainPage />} />
+      </Route>
+      <Route path="*" element={<ErrorPage />} />
+    </>
+  )
 );
 
 const App = () => {

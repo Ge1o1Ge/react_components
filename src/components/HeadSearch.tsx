@@ -1,25 +1,25 @@
-import { useNavigate } from 'react-router-dom';
-import { setItemWithEvent } from './LocalStorageListener';
-import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from './AppContext';
 
 const HeadSearch = () => {
-  const history = useNavigate();
+  const { dispatch } = useContext(AppContext);
+
   const [searchBox, setSearchBox] = useState(
     localStorage.getItem('searchUrl') || ''
   );
-  const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get('search');
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('search');
 
   const performSearch = (searchQuery: string) => {
-    setItemWithEvent('searchUrl', searchQuery);
+    dispatch({ type: "SetSucsess", payload: true });
+    dispatch({ type: "SetSearchValue", payload: searchQuery });
+    localStorage.setItem('searchUrl', searchQuery)
   };
 
   const handleSearch = () => {
-    history(
-      `${
-        window.location.pathname.split('/search')[0]
-      }/search?search=${searchBox}&page=1`
-    );
+    setSearchParams({search: searchBox})
   };
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const HeadSearch = () => {
           type="submit"
           onClick={(ev) => {
             ev.preventDefault();
-            setItemWithEvent('searchUrl', 'ErrorCatch');
+            performSearch('ErrorCatch');
           }}
         >
           Get Error

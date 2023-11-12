@@ -40,3 +40,20 @@ export type CatchError = {
   catchError: boolean;
   mounted: boolean;
 };
+
+// export type ContextState = {
+//   searchValue: string;
+//   itemList: Planet[];
+//   isLoading: boolean;
+// };
+
+export type Action =
+  | { type: 'SetSearchValue'; payload: string }
+  | { type: 'SetItemList'; payload: null | ResponsePlanetsType }
+  | { type: 'SetLoading'; payload: boolean }
+  | { type: 'SetPage'; payload: number }
+  | { type: 'SetLoading'; payload: boolean }
+  | { type: 'SetSucsess'; payload: boolean }
+  | { type: 'SetPageError'; payload: undefined | Error }
+  | { type: 'SetMounted'; payload: boolean };
+
