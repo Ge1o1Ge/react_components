@@ -4,6 +4,9 @@ import '@testing-library/jest-dom';
 import ErrorPage from './components/ErrorPage';
 import { BrowserRouter } from 'react-router-dom';
 import PlanetDetails from './components/PlanetDetails';
+import PlanetCard from './components/PlanetCards';
+import BodyResults from './components/BodyResults';
+import ErrorBoundry from './components/ErrorBoundry';
 
 describe('emptyTest', () => {
   it('tests is worling', () => {
@@ -58,8 +61,8 @@ describe('ErrorPage Component', () => {
         <ErrorPage />
       </BrowserRouter>
     );
-    const loadingDiv = screen.getByTestId('Error__page');
-    expect(loadingDiv).toHaveClass('Error__page');
+    const div = screen.getByTestId('Error__page');
+    expect(div).toHaveClass('Error__page');
   });
 
   it('renders Link component', () => {
@@ -103,7 +106,7 @@ describe('Detais Planet Component', () => {
     orbital_period: 'test-orbital',
   };
 
-  it('renders loading text', () => {
+  it('renders planet text', () => {
     render(
       <BrowserRouter>
         <PlanetDetails {...testProps} />
@@ -125,8 +128,8 @@ describe('Detais Planet Component', () => {
         <PlanetDetails {...testProps} />
       </BrowserRouter>
     );
-    const loadingDiv = screen.getByTestId('planet__details');
-    expect(loadingDiv).toHaveClass('planet__details');
+    const div = screen.getByTestId('planet__details');
+    expect(div).toHaveClass('planet__details');
   });
 
   it('changes the route when Link is clicked', () => {
@@ -144,4 +147,117 @@ describe('Detais Planet Component', () => {
 
     expect(window.location.pathname).toBe('/planets');
   });
+});
+
+describe('Detais Planet Component', () => {
+  const testProps = {
+    onClick: (index = 1) => {
+      console.log(index);
+    },
+    name: 'test-name',
+    index: 1,
+  };
+
+  it('renders planet text', () => {
+    render(
+      <BrowserRouter>
+        <PlanetCard clickedPlanet={0} {...testProps} />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByText(/test-name/i)).toBeInTheDocument();
+  });
+
+  it('has the correct class names', () => {
+    render(
+      <BrowserRouter>
+        <PlanetCard clickedPlanet={0} {...testProps} />
+      </BrowserRouter>
+    );
+    const div = screen.getByTestId('planet__card');
+    expect(div).toHaveClass('planet__card');
+  });
+
+  it('changes the route when Link is clicked', () => {
+    render(
+      <BrowserRouter>
+        <PlanetCard clickedPlanet={0} {...testProps} />
+      </BrowserRouter>
+    );
+
+    const linkElement = screen.getByRole('link', { name: /See Details/i });
+
+    act(() => {
+      fireEvent.click(linkElement);
+    });
+
+    expect(window.location.pathname).toBe('/planets');
+  });
+});
+
+describe('Results list', () => {
+  it('renders Results container', () => {
+    render(
+      <BrowserRouter>
+        <BodyResults />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByText(/1/i)).toBeInTheDocument();
+  });
+
+  it('has the correct class names', () => {
+    render(
+      <BrowserRouter>
+        <BodyResults />
+      </BrowserRouter>
+    );
+    const div = screen.getByTestId('results');
+    expect(div).toHaveClass('results');
+  });
+
+  it('changes the route when Pgination is clicked', () => {
+    render(
+      <BrowserRouter>
+        <BodyResults />
+      </BrowserRouter>
+    );
+
+    const linkElement = screen.getByRole('button', { name: />/i });
+
+    act(() => {
+      fireEvent.click(linkElement);
+    });
+
+    expect(window.location.pathname).toBe('/planets');
+  });
+});
+
+describe('Error boundry component', () => {
+  it('renders normal ellement', () => {
+    render(
+      <BrowserRouter>
+        <ErrorBoundry>
+          <div>Works</div>
+        </ErrorBoundry>
+      </BrowserRouter>
+    );
+
+    expect(screen.getByText(/Works/i)).toBeInTheDocument();
+  });
+
+  // it('renders error ellement', () => {
+  //   act(() => {
+  //     const ErrorComponent = () => {
+  //       throw new Error('Test error');
+  //     };
+  //     render(
+  //       <ErrorBoundry>
+  //         <ErrorComponent />
+  //       </ErrorBoundry>
+  //     );
+  //   });
+
+  //   expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
+  // });
 });

@@ -88,7 +88,7 @@ const BodyResults = () => {
   };
 
   return (
-    <main className="results section">
+    <main className="results section" data-testid="results">
       <section
         className={clickedPlanet >= 0 ? 'detailed' : 'results__splitter'}
       >

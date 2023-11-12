@@ -24,6 +24,7 @@ const config: Config = {
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.test.{js,jsx,ts,tsx}',
   ],
+  coveragePathIgnorePatterns: ['types.ts, vite-env.tsx'],
 };
 
 export default config;

@@ -19,6 +19,7 @@ const PlanetCard = ({
       className={`${index.toString()} ${
         clickedPlanet == index ? 'clicked' : ''
       } planet__card`}
+      data-testid="planet__card"
     >
       <h3 className="planet__title">{name}</h3>
 
