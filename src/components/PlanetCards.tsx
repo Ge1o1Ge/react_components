@@ -27,7 +27,10 @@ const PlanetCard = ({
           onClick(index);
         }}
         className="planet__link button"
-        to={{ pathname: window.location.pathname, search: newSearch.toString() }}
+        to={{
+          pathname: window.location.pathname,
+          search: newSearch.toString(),
+        }}
       >
         See Details
       </Link>

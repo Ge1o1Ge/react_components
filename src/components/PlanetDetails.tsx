@@ -23,7 +23,7 @@ const PlanetDetails = ({
   // const urlNum = Number(parts[parts.indexOf("planets") + 1]);;
 
   return (
-    <div className={`planet__details`}>
+    <div className="planet__details" data-testid="planet__details">
       <h3 className="planet__title">{name}</h3>
       <div className="planet__size">
         <p className="planet__text">diameter: {diameter} km</p>
