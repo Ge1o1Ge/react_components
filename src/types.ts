@@ -56,4 +56,3 @@ export type Action =
   | { type: 'SetSucsess'; payload: boolean }
   | { type: 'SetPageError'; payload: undefined | Error }
   | { type: 'SetMounted'; payload: boolean };
-

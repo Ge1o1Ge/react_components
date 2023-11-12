@@ -13,13 +13,13 @@ const HeadSearch = () => {
   const query = searchParams.get('search');
 
   const performSearch = (searchQuery: string) => {
-    dispatch({ type: "SetSucsess", payload: true });
-    dispatch({ type: "SetSearchValue", payload: searchQuery });
-    localStorage.setItem('searchUrl', searchQuery)
+    dispatch({ type: 'SetSucsess', payload: true });
+    dispatch({ type: 'SetSearchValue', payload: searchQuery });
+    localStorage.setItem('searchUrl', searchQuery);
   };
 
   const handleSearch = () => {
-    setSearchParams({search: searchBox})
+    setSearchParams({ search: searchBox });
   };
 
   useEffect(() => {

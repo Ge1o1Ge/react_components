@@ -14,7 +14,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route>
-        <Route path="/*" element={<MainPage />} />
+        <Route path="/planets/*" element={<MainPage />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </>

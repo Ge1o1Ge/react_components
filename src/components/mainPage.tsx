@@ -1,4 +1,3 @@
-
 import { AppProvider } from './AppContext';
 import BodyResults from './BodyResults';
 import ErrorBoundry from './ErrorBoundry';

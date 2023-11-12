@@ -28,7 +28,7 @@ const BodyResults = () => {
 
   const handlePageChange = (inc: number) => {
     const newPage = page + inc;
-    setSearchParams({page: newPage.toString()})
+    setSearchParams({ page: newPage.toString(), query: query || '', planet: planet || ''});
     dispatch({ type: 'SetPage', payload: newPage });
   };
 
